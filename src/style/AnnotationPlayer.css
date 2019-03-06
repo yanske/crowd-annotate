@@ -1,0 +1,37 @@
+.annotation-player {
+  background-color: aliceblue;
+  height: 700px;
+  width: 700px;
+}
+
+.hidden {
+  display: none;
+}
+
+canvas {
+  position: relative;
+  /* height: 600px; */
+  top: 50px;
+}
+
+.player-bar {
+  background-color: pink;
+  position: relative;
+  bottom: -3em;
+  padding-top: .2em;
+}
+
+.button {
+  padding: .5em;
+  margin-left: 1em;
+  margin-right: 1em;
+  height: 2em;
+}
+
+.button-right {
+  padding: .5em;
+  margin-left: 1em;
+  margin-right: 1em;
+  height: 2em;
+  transform: rotate(180deg);
+}

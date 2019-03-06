@@ -1,24 +1,29 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Nav from './components/Nav.js';
+import AnnotationPlayer from './components/AnnotationPlayer.js';
+import Survey from './components/Survey.js';
+import './style/App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
+        <Nav/>
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <AnnotationPlayer/>
+          <div className="task-bar">
+            <h2>Task ID: 01234</h2>
+
+            Short task description ... Macaroon dragée dragée caramels cheesecake sweet chocolate cake tiramisu. Lollipop sweet cookie.
+            Halvah cotton candy gummies dragée oat cake.
+            
+            Liquorice candy danish gummi bears pastry. Wafer liquorice tootsie roll topping soufflé cheesecake dragée.
+            Lemon drops bonbon jelly-o. Gummi bears candy candy canes sugar plum icing cake topping gummies jujubes.
+            <br/>
+            <br/>
+            <hr/>
+            <Survey/>
+          </div>
         </header>
       </div>
     );
