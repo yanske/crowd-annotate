@@ -12,7 +12,7 @@ class App extends Component {
         <Nav/>
         <Switch>
           <Route exact path='/' component={() => <Browser/> }/>
-          <Route path='/labeller' component={() => <Labeller/> }/>
+          <Route path='/labeller/:frag_id/user/:user_id' component={({location}) => <Labeller location={location}/> }/>
         </Switch>
       </div>
     );

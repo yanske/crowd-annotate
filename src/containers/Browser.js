@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import StubApi from './../services/api.js';
+import FragCard from './../components/FragCard.js';
 import './../style/Browser.css';
 
 class Browser extends Component {
@@ -18,11 +19,19 @@ class Browser extends Component {
   }
 
   showCurrentFragments() {
-    console.log(this.state.frags);
-    return (
-      <div>
-      </div>
-    );
+    if (this.state.frags.length === 0) {
+      return "No fragments exists!";
+    }
+
+    var fragments = [];
+    var id = 0;
+    this.state.frags.forEach((f) => {
+      fragments.push(
+        <FragCard key={id} frag_id={f.id} users={f.users}/>
+      );
+      id += 1;
+    });
+    return fragments;
   }
 
   render() {

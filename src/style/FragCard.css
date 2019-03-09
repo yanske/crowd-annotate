@@ -1,0 +1,9 @@
+.fragcard {
+  border: 1px solid pink;
+  padding-bottom: 1em;
+}
+
+.user-container {
+  display: flex;
+  flex-direction: column;
+}
