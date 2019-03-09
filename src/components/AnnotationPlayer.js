@@ -3,21 +3,46 @@ import restart from '../images/refresh.svg';
 import left from '../images/left.svg';
 import '../style/AnnotationPlayer.css';
 
-// Default dimensions
-const HEIGHT = 500;
-const WIDTH = 351;
+// Max bounds
+const MAX_HEIGHT = 600;
+const MAX_WIDTH = 450;
 
 class AnnotationPlayer extends Component {
   constructor(props) {
     super(props);
-    this.state = { on: 0, annotations: [], image: { url: null, h: HEIGHT, w: WIDTH }};
+    this.state = { on: 0, annotations: [], image: { url: null, h: MAX_HEIGHT, w: MAX_WIDTH }};
     this.restart = this.restart.bind(this);
     this.prev = this.prev.bind(this);
     this.next = this.next.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ annotations: nextProps.annotations, image: nextProps.image });
+    var height = nextProps.image.h;
+    var width = nextProps.image.w;
+    // Scale down image height
+    if (nextProps.image.w > MAX_WIDTH) {
+      var scale = width / MAX_WIDTH;
+      width = MAX_WIDTH;
+      height = height / scale;
+
+      // If new height is too large, scale again
+      if (height > MAX_HEIGHT) {
+        scale = height / MAX_HEIGHT;
+        height = MAX_HEIGHT;
+        width = width / scale;
+      }
+    }
+
+    this.setState({
+      annotations: nextProps.annotations,
+      image: {
+        url: nextProps.image.url,
+        w: width,
+        h: height,
+        og_w: nextProps.image.w,
+        og_h: nextProps.image.h
+      },
+    });
   }
 
   restart() {
@@ -42,7 +67,7 @@ class AnnotationPlayer extends Component {
     const img = this.refs.image;
 
     img.onload = () => {
-      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, WIDTH, HEIGHT);
+      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, this.state.image.w, this.state.image.h);
       ctx.font = "20px Courier"
     }
   }
@@ -53,17 +78,19 @@ class AnnotationPlayer extends Component {
     const img = this.refs.image;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, WIDTH, HEIGHT);
+    ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, this.state.image.w, this.state.image.h);
     ctx.fillStyle = "red";
     for (var i = 0; i < this.state.on; i++) {
-      ctx.fillText(this.state.annotations[i].label, WIDTH * this.state.annotations[i].x / 100.0, HEIGHT * this.state.annotations[i].y / 100.0 );
+      var annotationX = this.state.annotations[i].x * (this.state.image.w / this.state.image.og_w);
+      var annotationY = this.state.annotations[i].y * (this.state.image.h / this.state.image.og_h);
+      ctx.fillText(this.state.annotations[i].label, annotationX, annotationY );
     }
   }
 
   render() {
     return (
       <div className="annotation-player">
-        <canvas ref="canvas" width={WIDTH} height={HEIGHT} />
+        <canvas ref="canvas" width={this.state.image.w} height={this.state.image.h} />
         <img className="hidden" ref="image" src={this.state.image.url} alt="Annotated"/>
         <div className="player-bar">
           <input type="image" className="button" src={restart} alt="restart" onClick={this.restart}/>
